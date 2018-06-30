@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>mall</title>
+      <script>
+        (function (b, c) {
+          var d = b.documentElement,
+            resizeEvt = 'orientationchange' in c ? 'orientationchange' : 'resize',
+            recalc = function () {
+              var a = d.clientWidth;
+              if (!a) return;
+              d.style.fontSize = (20 * (a / 1080)) > 100 ? 100 + "px" : (100 * (a / 1080)) + 'px'
+            },
+            anime = c.requestAnimationFrame || c.webkitRequestAnimationFrame || c.mozRequestAnimationFrame || c.oRequestAnimationFrame ||
+              function (e) {
+                return setTimeout(e, 16.67)
+              };
+          if (!b.addEventListener) return;
+          c.addEventListener(resizeEvt, recalc, false);
+          b.addEventListener('DOMContentLoaded', recalc, false)
+        })(document, window);
+      </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
