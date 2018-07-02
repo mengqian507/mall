@@ -156,6 +156,7 @@ export default {
         font-family 'MicrosoftYaHeiUI'
         font-size 0.36rem
         background: #F2F2F2
+        color #000
         .header-con{
             background #fff
             .header{
@@ -325,7 +326,7 @@ export default {
                         }
                         .underline{
                             display block
-                            margin: -0.1rem 0 0 1rem;
+                            margin: -0.1rem 0 0 1.05rem;
                             width 0.7rem
                             height 0.12rem
                             background-image: linear-gradient(90deg, #FF9749 0%, #FF5167 100%);

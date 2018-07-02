@@ -43,6 +43,36 @@
             <div class="my-bean">我的竞豆：555555</div>
             <div class="btn">立即兑换</div>
         </div>
+        <!--弹框-->
+        <div class="model">
+            <div class="md-modal">
+                <div class="md-modal-inner">
+                    <div class="md-content" style="margin-top: 20px;">
+                        <div class="confirm-tips">
+                            兑换将使用竞豆
+                        </div>
+                        <div class="btn-wrap">
+                            <button class="cancel">取消</button>
+                            <button class="confirm">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="md-modal modal-msg md-modal-transition" v-if="mdShow1">-->
+                <!--<div class="md-modal-inner">-->
+                    <!--<div class="md-content" style="margin-top: 20px;">-->
+                        <!--<div class="confirm-tips">-->
+                            <!--{{mag}}-->
+                        <!--</div>-->
+                        <!--<div class="btn-wrap">-->
+                            <!--<button class="confirm" @click="handleConfirm1">确认</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--遮罩层-->
+            <div class="md-overlay"></div>
+        </div>
     </div>
 </template>
 
@@ -58,6 +88,7 @@ export default {
         width 100%
         font-family 'MicrosoftYaHeiUI'
         font-size 0.3rem
+        color #000
         .header{
             height 1.08rem
             line-height 1.08rem
@@ -85,6 +116,7 @@ export default {
                 font-family: 'MicrosoftYaHeiUI-Bold'
                 font-size: 0.42rem
                 color: #232323
+                font-weight bold
             }
             .comm-intro{
                 margin 0.2rem 0 0.23rem 0
@@ -103,7 +135,8 @@ export default {
                         margin 0.06rem 0.05rem 0 0
                     }
                     span{
-                        font-family: 'MicrosoftYaHeiUI-Bold'
+                        font-family: 'MicrosoftYaHeiUI'
+                        font-weight bold
                         font-size: 0.45rem
                         color: #FF8400
                     }
@@ -154,6 +187,52 @@ export default {
                 font-family 'MicrosoftYaHeiUI-Bold'
                 font-size 0.56rem
                 color #FFFFFF
+            }
+        }
+        .model{
+            .md-modal {
+                position fixed
+                width 7.6rem
+                height 4rem
+                background #fff
+                left 50%
+                top 50%
+                transform translate(-50%, -50%)
+                z-index 999
+                border-radius:0.108rem
+                box-shadow:0 0.10rem 0.22rem 0 rgba(0,0,0,0.1);
+                .confirm-tips {
+                    font-size .42rem
+                    color #232323
+                    margin 1rem 0 1.2rem 0
+                }
+                .btn-wrap{
+                    display flex
+                    justify-content space-around
+                    .cancel, .confirm{
+                        font-size 0.38rem
+                        color #fff
+                        width 3.2rem
+                        height 0.86rem
+                        background rgba(198,198,198,1)
+                        box-shadow 0 0.06rem 0.11rem 0 rgba(153,153,153,0.36)
+                        border-radius:0.108rem
+                        &.confirm {
+                            background #FF6262
+                        }
+                    }
+                }
+            }
+        .md-overlay {
+            background #000
+            opacity 0.4
+            width 100%
+            height 100%
+            position fixed
+            top 0
+            left 0
+            right 0
+            z-index 99
             }
         }
     }
