@@ -2,33 +2,29 @@
     <div class="my-change">
         <div class="header">
             <div class="icon">
-                <img class="icon-img" src="../../assets/images/return.png" alt="">
+                <router-link to="/">
+                    <img class="icon-img first" src="../../assets/images/return.png" alt="">
+                </router-link>
                 <img class="icon-img" src="../../assets/images/close.png" alt="">
             </div>
             <div class="header-con">全部商品</div>
         </div>
         <ul class="menu">
-            <li class="menu-li active">
-                <span class="text">全部</span>
-                <span class="underline"></span>
+            <li class="menu-li" v-for="(item,index) in tabsParam" @click="toggleTabs(index)" :class="{active:index == nowIndex}" :key="index">
+                <span class="text">{{item}}</span>
+                <span class="underline" v-show="index == nowIndex"></span>
             </li>
-            <li class="menu-li active">
-                <span class="text">实物商品</span>
-                <span class="underline"></span>
-            </li>
-            <li class="menu-li">虚拟商品</li>
-            <li class="menu-li">优惠券</li>
         </ul>
         <div style="height: 0.2rem; background:#F2F2F2;margin-top: 2px"></div>
         <ul class="list">
-            <li class="list-li">
+            <li class="list-li" v-for="item in recordList" :key="item._id">
                 <div class="img-box">
-                    <img class="goods-img" src="../../assets/images/bean.png" alt="">
+                    <img class="goods-img" :src="item.commodity.commodityThumbnail" alt="">
                 </div>
                 <div class="goods">
-                    <div class="goods-name">商品名称</div>
-                    <div class="goods-introduce">商品简介</div>
-                    <div class="price">兑换价格：20000竞豆</div>
+                    <div class="goods-name">{{item.commodity.commodityName}}</div>
+                    <div class="goods-introduce">{{item.commodity.briefIntroduction}}</div>
+                    <div class="price">兑换价格：{{item.commodity.price}}竞豆</div>
                     <div class="exchange">
                         <div class="time">2018.06.31 15:59</div>
                         <div class="state">
@@ -43,8 +39,39 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'MyExchange'
+  name: 'MyExchange',
+  data () {
+    return {
+      recordList: [],
+      tabsParam: ['全部', '实物商品', '虚拟商品', '优惠券'],
+      nowIndex: 0
+    }
+  },
+  mounted () {
+    this.getRecordList()
+  },
+  methods: {
+    getRecordList () {
+      axios.get('/api/v2.0/coupons', {
+        params: {
+          commodityType: this.nowIndex
+        }
+      }).then(res => {
+        if (res.data.status === 1 && res.data.data) {
+          this.recordList = res.data.data.list
+          console.log(this.recordList)
+        } else {
+          alert(res.data.msg)
+        }
+      })
+    },
+    toggleTabs (index) {
+      this.nowIndex = index
+      this.getRecordList()
+    }
+  }
 }
 </script>
 
@@ -67,6 +94,9 @@ export default {
                 .icon-img {
                     width 0.56rem
                     height 0.56rem
+                    &.first{
+                        margin-right 0.1rem
+                    }
                 }
             }
         }

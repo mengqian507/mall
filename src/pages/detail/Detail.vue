@@ -2,22 +2,27 @@
     <div class="detail">
         <div class="header">
             <div class="icon">
-                <img class="icon-img" src="../../assets/images/return.png" alt="">
+                <router-link to="/">
+                    <img class="icon-img first" src="../../assets/images/return.png" alt="">
+                </router-link>
                 <img class="icon-img" src="../../assets/images/close.png" alt="">
             </div>
             <div class="header-con">兑换商城</div>
         </div>
-        <img class="commodity-img" src="../../assets/images/bean.png" alt="">
+        <div class="commodity-box">
+            <img class="commodity-img" :src="goodsDetail.commodityHeadUrl">
+            <img class="commodity-sell-out" v-show="goodsDetail.surplusStock <= 0" src="../../assets/images/sell-out-240.png">
+        </div>
         <div class="commodity">
-            <div class="comm-title">商品名称</div>
-            <div class="comm-intro">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</div>
+            <div class="comm-title">{{goodsDetail.commodityName}}</div>
+            <div class="comm-intro">{{goodsDetail.briefIntroduction}}</div>
             <div class="comm-message">
                 <div class="bean">
                     <img src="../../assets/images/bean-52.png" alt="">
-                    <span>200000竞豆</span>
+                    <span>{{goodsDetail.price}}竞豆</span>
                 </div>
-                <div class="price">参考价（500元）</div>
-                <div class="stock">剩余99999件</div>
+                <div class="price">参考价（{{goodsDetail.referencePrice/100}}元）</div>
+                <div class="stock">剩余{{goodsDetail.surplusStock}}件</div>
             </div>
             <div style="clear: both"></div>
         </div>
@@ -27,8 +32,7 @@
                 <span></span>
                 商品介绍
             </div>
-            <div class="content">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介
-                商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</div>
+            <div class="content">{{goodsDetail.description}}</div>
         </div>
         <div style="height: 1px;background: #E9E9E9;width:10rem;margin: 0 auto"></div>
         <div class="introduce" style=" margin-bottom: 1.8rem">
@@ -36,49 +40,128 @@
                 <span></span>
                 兑换说明
             </div>
-            <div class="content">商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介
-                商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介商品简介</div>
+            <div class="content">{{goodsDetail.exchangeExplain}}</div>
         </div>
         <div class="footer">
             <div class="my-bean">我的竞豆：555555</div>
-            <div class="btn">立即兑换</div>
+            <div class="btn" :class="{active:goodsDetail.surplusStock <= 0}" @click="exchangeBtn()">立即兑换</div>
         </div>
         <!--弹框-->
         <div class="model">
-            <div class="md-modal">
+            <div class="md-modal" v-if="mdShow1">
                 <div class="md-modal-inner">
                     <div class="md-content" style="margin-top: 20px;">
                         <div class="confirm-tips">
-                            兑换将使用竞豆
+                            兑换将使用{{goodsDetail.price}}竞豆
                         </div>
                         <div class="btn-wrap">
-                            <button class="cancel">取消</button>
-                            <button class="confirm">确认</button>
+                            <button class="cancel" @click="cancelBtn1()">取消</button>
+                            <button class="confirm" @click="confirmBtn1()">确认</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--<div class="md-modal modal-msg md-modal-transition" v-if="mdShow1">-->
-                <!--<div class="md-modal-inner">-->
-                    <!--<div class="md-content" style="margin-top: 20px;">-->
-                        <!--<div class="confirm-tips">-->
-                            <!--{{mag}}-->
-                        <!--</div>-->
-                        <!--<div class="btn-wrap">-->
-                            <!--<button class="confirm" @click="handleConfirm1">确认</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="md-modal " v-if="mdShow2">
+                <div class="md-modal-inner">
+                    <div class="md-content" style="margin-top: 20px;">
+                        <div class="confirm-tips">
+                            兑换成功，请联系客服领取
+                        </div>
+                        <div class="btn-wrap">
+                            <button class="cancel" @click="cancelBtn2()">取消</button>
+                            <button class="confirm" @click="confirmBtn2()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md-modal " v-if="mdShow3">
+                <div class="md-modal-inner">
+                    <div class="md-content" style="margin-top: 20px;">
+                        <div class="confirm-tips">
+                            您的竞豆余额不足
+                        </div>
+                        <div class="btn-wrap">
+                            <button class="cancel" @click="cancelBtn3()">取消</button>
+                            <button class="confirm" @click="confirmBtn3()">前去兑换</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--遮罩层-->
-            <div class="md-overlay"></div>
+            <div class="md-overlay" v-if="mdShow"></div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'Detail'
+  name: 'Detail',
+  data () {
+    return {
+      goodsDetail: {},
+      mdShow1: false,
+      mdShow2: false,
+      mdShow3: false,
+      mdShow: false
+    }
+  },
+  mounted () {
+    this.getGoodsDetail()
+  },
+  methods: {
+    //    获取详情
+    getGoodsDetail () {
+      axios.get('api/v2.0/commodities/' + this.$route.params.id)
+        .then(res => {
+          if (res.data.status === 1 && res.data.data) {
+            this.goodsDetail = res.data.data
+            console.log(this.goodsDetail)
+          } else {
+            alert(res.data.msg)
+          }
+        })
+    },
+    //    点击立即兑换按钮
+    exchangeBtn () {
+      this.mdShow1 = true
+      this.mdShow = true
+    },
+    cancelBtn1 () {
+      this.mdShow1 = false
+      this.mdShow = false
+    },
+    cancelBtn2 () {
+      this.mdShow2 = false
+      this.mdShow = false
+    },
+    cancelBtn3 () {
+      this.mdShow3 = false
+      this.mdShow = false
+    },
+    confirmBtn1 () {
+
+    },
+    confirmBtn2 () {
+
+    },
+    confirmBtn3 () {
+
+    },
+    //    点击弹框的确认按钮
+    exchangeCommodity () {
+      this.mdShow = false
+      axios.post('/api/v2.0/exchangecommodity', {
+        commodityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.status === 1) {
+
+        } else {
+
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -101,12 +184,27 @@ export default {
                 .icon-img{
                     width 0.56rem
                     height 0.56rem
+                    &.first{
+                        margin-right 0.1rem
+                    }
                 }
             }
         }
-        .commodity-img{
-            width 100%
+        .commodity-box{
+            width 10.80rem
             height 8.1rem
+            position relative
+            .commodity-img{
+                width 10.80rem
+                height 8.1rem
+            }
+            .commodity-sell-out{
+                position absolute
+                width 2.4rem
+                height 2.4rem
+                top 0.6rem
+                right 0.6rem
+            }
         }
         .commodity{
             padding 0.4rem 0.46rem 0.5rem 0.4rem
@@ -187,6 +285,9 @@ export default {
                 font-family 'MicrosoftYaHeiUI-Bold'
                 font-size 0.56rem
                 color #FFFFFF
+                &.active{
+                    background #999999
+                }
             }
         }
         .model{
