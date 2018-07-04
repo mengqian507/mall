@@ -7,7 +7,7 @@
                 </router-link>
                 <img class="icon-img" src="../../assets/images/close.png" alt="">
             </div>
-            <div class="header-con">全部商品</div>
+            <div class="header-con">我的兑换</div>
         </div>
         <ul class="menu">
             <li class="menu-li" v-for="(item,index) in tabsParam" @click="toggleTabs(index)" :class="{active:index == nowIndex}" :key="index">
@@ -16,7 +16,7 @@
             </li>
         </ul>
         <div style="height: 0.2rem; background:#F2F2F2;margin-top: 2px"></div>
-        <ul class="list">
+        <ul class="list" v-show="recordList.length != 0">
             <li class="list-li" v-for="item in recordList" :key="item._id">
                 <div class="img-box">
                     <img class="goods-img" :src="item.commodity.commodityThumbnail" alt="">
@@ -35,6 +35,12 @@
                 </div>
             </li>
         </ul>
+        <div class="blank" v-show="recordList.length == 0">
+            <img src="../../assets/images/blank.png" alt="">
+            <p>你还没有兑换任何奖品<br>
+                快去兑换吧～
+            </p>
+        </div>
     </div>
 </template>
 
@@ -99,6 +105,9 @@ export default {
                     }
                 }
             }
+            .header-con{
+                margin-right 1.5rem
+            }
         }
         .menu{
             height 1rem
@@ -130,7 +139,7 @@ export default {
                 width 100%
                 display flex
                 border-bottom 1px solid #E9E9E9
-                padding 0.4rem 0
+                padding 0.4rem 0 0.35rem 0
                 box-sizing border-box
                 .img-box{
                     text-align center
@@ -153,7 +162,7 @@ export default {
                     .goods-introduce{
                         color #999999
                         font-size 0.3rem
-                        margin 0.2rem 0 0.3rem 0
+                        margin 0.1rem 0 0.2rem 0
                     }
                     .price{
                         font-size 0.3rem
@@ -164,6 +173,7 @@ export default {
                             float left
                             font-size 0.3rem
                             color #464646
+                            margin-top 0.05rem
                         }
                         .state{
                             float right
@@ -180,6 +190,19 @@ export default {
                         }
                     }
                 }
+            }
+        }
+        .blank{
+            width 100%
+            position absolute
+            top 7.55rem
+            img{
+                width 6.84rem
+                height 3.36rem
+            }
+            p{
+                color #BDBDBD
+                font-size 0.42rem
             }
         }
     }

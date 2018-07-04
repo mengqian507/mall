@@ -21,7 +21,11 @@
             </div>
             <div class="prize">
                 <img class="horn" src="../../assets/images/horn.png" alt="">
-                <span>恭喜李获得什么耳机</span>
+                <swiper :options="swiperOption">
+                    <swiper-slide v-for="item in couponsList" :key="item._id">
+                        <MarqueeTips class="lamp" v-bind:content="item.commodity.commodityName"></MarqueeTips>
+                    </swiper-slide>
+                </swiper>
             </div>
         </div>
         <div class="content">
@@ -36,7 +40,7 @@
                         <img class="icon" src="../../assets/images/more.png" alt="">
                     </router-link>
                 </div>
-                <ul class="content-ul">
+                <ul class="content-ul" v-show="recommendGoods.length != 0">
                     <router-link tag="li" :to="'/detail/' + item._id" class="content-li" v-for="item in recommendGoods" :key="item._id">
                         <img class="commodity-img" :src="item.commodityThumbnail">
                         <div class="commodity-message">
@@ -67,7 +71,7 @@
                         <span class="underline" v-show="index == nowIndex"></span>
                     </li>
                 </ul>
-                <ul class="content-ul">
+                <ul class="content-ul" v-show="hotGoods.length != 0">
                     <router-link class="content-li" tag="li" :to="'/detail/' + item._id" v-for="item in hotGoods" :key="item._id">
                         <div class="img-content">
                             <img class="commodity-img" :src="item.commodityThumbnail">
@@ -90,19 +94,30 @@
 
 <script>
 import axios from 'axios'
+import MarqueeTips from 'vue-marquee-tips'
 export default {
   name: 'Home',
+  components: {
+    MarqueeTips
+  },
   data () {
     return {
       recommendGoods: [],
       hotGoods: [],
+      couponsList: [],
       tabsParam: ['全部', '实物商品', '虚拟商品', '优惠券'],
-      nowIndex: 0
+      nowIndex: 0,
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        loop: true,
+        autoplay: 30000
+      }
     }
   },
   mounted () {
     this.getRecommendGoods()
     this.getHotGoods()
+    this.getCoupons()
   },
   methods: {
     //  获取推荐列表
@@ -113,7 +128,19 @@ export default {
         }
       }).then(res => {
         if (res.data.status === 1 && res.data.data) {
-          this.recommendGoods = res.data.data.list
+          let data = res.data.data.list
+          if (data.length <= 3) {
+            this.recommendGoods = data
+          } else {
+            let arr = []
+            while (arr.length < 3) {
+              let arrIndex = Math.floor(Math.random() * data.length)
+              if (arr.indexOf(arrIndex) < 0) {
+                this.recommendGoods.push(data[arrIndex])
+                arr.push(arrIndex)
+              }
+            }
+          }
         } else {
           alert(res.data.msg)
         }
@@ -129,7 +156,21 @@ export default {
       }).then(res => {
         if (res.data.status === 1 && res.data.data) {
           this.hotGoods = res.data.data.list
-          console.log(this.hotGoods)
+        } else {
+          alert(res.data.msg)
+        }
+      })
+    },
+    //  获取兑换列表
+    getCoupons () {
+      axios.get('/api/v2.0/coupons', {
+        params: {
+          commodityType: 0
+        }
+      }).then(res => {
+        if (res.data.status === 1 && res.data.data) {
+          this.couponsList = res.data.data.list
+          console.log(this.couponsList)
         } else {
           alert(res.data.msg)
         }
@@ -169,6 +210,9 @@ export default {
                             margin-right 0.1rem
                         }
                     }
+                }
+                .header-con{
+                    margin-right 1.5rem
                 }
             }
             .personal{
@@ -220,11 +264,17 @@ export default {
                 color: #FF5566
                 font-size: 0.28rem
                 .horn{
+                    float left
                     display inline-block
                     width 0.46rem
                     height 0.39rem
-                    margin-right 0.25rem
+                    margin-top 0.25rem
                     vertical-align middle
+                }
+                .lamp{
+                    display inline-block
+                    margin-left 0.25rem
+                    width 8.55rem
                 }
             }
         }

@@ -16,7 +16,7 @@
             </li>
         </ul>
         <div style="height: 0.2rem; background:#F2F2F2;margin-top: 2px"></div>
-        <ul class="list">
+        <ul class="list" v-show="goodsList.length != 0">
             <li class="list-li" v-for="item in goodsList" :key="item._id">
                 <div class="img-box">
                     <img class="goods-img" :src="item.commodityThumbnail">
@@ -36,6 +36,12 @@
                 </div>
             </li>
         </ul>
+        <div class="blank" v-show="goodsList.length == 0">
+            <img src="../../assets/images/blank.png" alt="">
+            <p>商品还没有准备好<br>
+                请您密切关注哦～
+            </p>
+        </div>
     </div>
 </template>
 
@@ -99,6 +105,9 @@ export default {
                         margin-right 0.1rem
                     }
                 }
+            }
+            .header-con{
+                margin-right 1.5rem
             }
         }
         .menu{
@@ -188,6 +197,19 @@ export default {
                         }
                     }
                 }
+            }
+        }
+        .blank{
+            width 100%
+            position absolute
+            top 7.55rem
+            img{
+                width 6.84rem
+                height 3.36rem
+            }
+            p{
+                color #BDBDBD
+                font-size 0.42rem
             }
         }
     }

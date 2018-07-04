@@ -7,7 +7,7 @@
                 </router-link>
                 <img class="icon-img" src="../../assets/images/close.png" alt="">
             </div>
-            <div class="header-con">兑换商城</div>
+            <div class="header-con">商品详情</div>
         </div>
         <div class="commodity-box">
             <img class="commodity-img" :src="goodsDetail.commodityHeadUrl">
@@ -22,7 +22,7 @@
                     <span>{{goodsDetail.price}}竞豆</span>
                 </div>
                 <div class="price">参考价（{{goodsDetail.referencePrice/100}}元）</div>
-                <div class="stock">剩余{{goodsDetail.surplusStock}}件</div>
+                <div class="stock" ref="stockBox">剩余{{goodsDetail.surplusStock}}件</div>
             </div>
             <div style="clear: both"></div>
         </div>
@@ -43,7 +43,7 @@
             <div class="content">{{goodsDetail.exchangeExplain}}</div>
         </div>
         <div class="footer">
-            <div class="my-bean">我的竞豆：555555</div>
+            <div class="my-bean" ref="beanBox">我的竞豆：{{coin}}</div>
             <div class="btn" :class="{active:goodsDetail.surplusStock <= 0}" @click="exchangeBtn()">立即兑换</div>
         </div>
         <!--弹框-->
@@ -100,6 +100,7 @@ export default {
   data () {
     return {
       goodsDetail: {},
+      coin: 5000,
       mdShow1: false,
       mdShow2: false,
       mdShow3: false,
@@ -140,26 +141,30 @@ export default {
       this.mdShow = false
     },
     confirmBtn1 () {
-
-    },
-    confirmBtn2 () {
-
-    },
-    confirmBtn3 () {
-
-    },
-    //    点击弹框的确认按钮
-    exchangeCommodity () {
-      this.mdShow = false
+      this.mdShow1 = false
       axios.post('/api/v2.0/exchangecommodity', {
         commodityId: this.$route.params.id
       }).then(res => {
         if (res.data.status === 1) {
-
+          this.$refs.stockBox.innerHTML = '剩余' + res.data.data.surplusStock + '份'
+          this.$refs.beanBox.innerHTML = '我的竞豆：' + res.data.data.coin
+          if (this.goodsDetail.price > res.data.data.coin) {
+            this.mdShow3 = true
+          } else {
+            this.mdShow2 = true
+          }
         } else {
-
+          alert(res.data.msg)
         }
       })
+    },
+    confirmBtn2 () {
+      this.mdShow2 = false
+      this.mdShow = false
+    },
+    confirmBtn3 () {
+      this.mdShow3 = false
+      this.mdShow = false
     }
   }
 }
@@ -188,6 +193,9 @@ export default {
                         margin-right 0.1rem
                     }
                 }
+            }
+            .header-con{
+                margin-right 1.5rem
             }
         }
         .commodity-box{
