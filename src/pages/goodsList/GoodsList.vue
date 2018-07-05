@@ -163,6 +163,7 @@ export default {
                 .goods{
                     text-align left
                     margin-left 0.47rem
+                    width 100%
                     .goods-name{
                         font-weight bold
                         color #232323
@@ -170,7 +171,14 @@ export default {
                     .goods-introduce{
                         color #999999
                         font-size 0.3rem
-                        margin 0.06rem 0 0.2rem 0
+                        margin 0.15rem 0 0.25rem 0
+                        height 0.8rem
+                        line-height 0.38rem
+                        overflow hidden
+                        text-overflow ellipsis
+                        display -webkit-box
+                        -webkit-line-clamp 2
+                        -webkit-box-orient vertical
                     }
                     .goods-message{
                         height 0.75rem

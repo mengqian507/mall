@@ -163,6 +163,13 @@ export default {
                         color #999999
                         font-size 0.3rem
                         margin 0.1rem 0 0.2rem 0
+                        height 0.8rem
+                        line-height 0.38rem
+                        overflow hidden
+                        text-overflow ellipsis
+                        display -webkit-box
+                        -webkit-line-clamp 2
+                        -webkit-box-orient vertical
                     }
                     .price{
                         font-size 0.3rem
@@ -173,7 +180,6 @@ export default {
                             float left
                             font-size 0.3rem
                             color #464646
-                            margin-top 0.05rem
                         }
                         .state{
                             float right

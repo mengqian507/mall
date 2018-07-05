@@ -12,7 +12,7 @@
                 <div class="content">
                     <div class="bean-con">
                         <img class="icon" src="../../assets/images/bean-52.png" alt="">
-                        <span class="bean">634</span>
+                        <span class="bean">{{bean}}</span>
                     </div>
                     <router-link class="btn" tag="div" to="/exchange">
                         我的兑换
@@ -22,8 +22,9 @@
             <div class="prize">
                 <img class="horn" src="../../assets/images/horn.png" alt="">
                 <swiper :options="swiperOption">
-                    <swiper-slide v-for="item in couponsList" :key="item._id">
-                        <MarqueeTips class="lamp" v-bind:content="item.commodity.commodityName"></MarqueeTips>
+                    <swiper-slide v-for="item in couponsList" :key="item._id" style="text-align: left;">
+                        恭喜{{item.userId.nickname}}******获得{{item.commodity.commodityName}}
+                        <!--<MarqueeTips class="lamp" v-bind:content="item.commodity.commodityName"></MarqueeTips>-->
                     </swiper-slide>
                 </swiper>
             </div>
@@ -41,7 +42,7 @@
                     </router-link>
                 </div>
                 <ul class="content-ul" v-show="recommendGoods.length != 0">
-                    <router-link tag="li" :to="'/detail/' + item._id" class="content-li" v-for="item in recommendGoods" :key="item._id">
+                    <router-link tag="li" :to="'/detail/' + item._id + '/' + bean" class="content-li" v-for="item in recommendGoods" :key="item._id">
                         <img class="commodity-img" :src="item.commodityThumbnail">
                         <div class="commodity-message">
                             <div class="commodity-title">{{item.commodityName}}</div>
@@ -72,7 +73,7 @@
                     </li>
                 </ul>
                 <ul class="content-ul" v-show="hotGoods.length != 0">
-                    <router-link class="content-li" tag="li" :to="'/detail/' + item._id" v-for="item in hotGoods" :key="item._id">
+                    <router-link class="content-li" tag="li" :to="'/detail/' + item._id + '/' + bean" v-for="item in hotGoods" :key="item._id">
                         <div class="img-content">
                             <img class="commodity-img" :src="item.commodityThumbnail">
                             <img v-show="item.surplusStock <= 0" class="commodity-icon" src="../../assets/images/sell-out-80.png" alt="">
@@ -107,10 +108,12 @@ export default {
       couponsList: [],
       tabsParam: ['全部', '实物商品', '虚拟商品', '优惠券'],
       nowIndex: 0,
+      bean: 4000,
       swiperOption: {
         pagination: '.swiper-pagination',
         loop: true,
-        autoplay: 30000
+        autoplay: 200,
+        speed: 5000
       }
     }
   },
@@ -170,7 +173,9 @@ export default {
       }).then(res => {
         if (res.data.status === 1 && res.data.data) {
           this.couponsList = res.data.data.list
-          console.log(this.couponsList)
+          for (let i = 0; i < this.couponsList.length; i++) {
+            this.couponsList[i].userId.nickname = (this.couponsList[i].userId.nickname).slice(0, 1)
+          }
         } else {
           alert(res.data.msg)
         }
@@ -186,6 +191,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
+    .home >>> .swiper-wrapper
+        transition-timing-function: linear !important
     .home{
         width 100%
         font-family 'MicrosoftYaHeiUI'
@@ -268,7 +275,7 @@ export default {
                     display inline-block
                     width 0.46rem
                     height 0.39rem
-                    margin-top 0.25rem
+                    margin 0.25rem 0.2rem 0 0
                     vertical-align middle
                 }
                 .lamp{

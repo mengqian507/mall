@@ -21,7 +21,7 @@
                     <img src="../../assets/images/bean-52.png" alt="">
                     <span>{{goodsDetail.price}}竞豆</span>
                 </div>
-                <div class="price">参考价（{{goodsDetail.referencePrice/100}}元）</div>
+                <div class="price">参考价({{goodsDetail.referencePrice/100}}元)</div>
                 <div class="stock" ref="stockBox">剩余{{goodsDetail.surplusStock}}件</div>
             </div>
             <div style="clear: both"></div>
@@ -35,7 +35,7 @@
             <div class="content">{{goodsDetail.description}}</div>
         </div>
         <div style="height: 1px;background: #E9E9E9;width:10rem;margin: 0 auto"></div>
-        <div class="introduce" style=" margin-bottom: 1.8rem">
+        <div class="introduce" >
             <div class="title">
                 <span></span>
                 兑换说明
@@ -43,7 +43,7 @@
             <div class="content">{{goodsDetail.exchangeExplain}}</div>
         </div>
         <div class="footer">
-            <div class="my-bean" ref="beanBox">我的竞豆：{{coin}}</div>
+            <div class="my-bean" ref="beanBox">我的竞豆：{{bean}}</div>
             <div class="btn" :class="{active:goodsDetail.surplusStock <= 0}" @click="exchangeBtn()">立即兑换</div>
         </div>
         <!--弹框-->
@@ -100,7 +100,7 @@ export default {
   data () {
     return {
       goodsDetail: {},
-      coin: 5000,
+      bean: '',
       mdShow1: false,
       mdShow2: false,
       mdShow3: false,
@@ -109,6 +109,7 @@ export default {
   },
   mounted () {
     this.getGoodsDetail()
+    this.bean = this.$route.params.bean
   },
   methods: {
     //    获取详情
@@ -117,7 +118,6 @@ export default {
         .then(res => {
           if (res.data.status === 1 && res.data.data) {
             this.goodsDetail = res.data.data
-            console.log(this.goodsDetail)
           } else {
             alert(res.data.msg)
           }
@@ -144,10 +144,15 @@ export default {
       this.mdShow1 = false
       axios.post('/api/v2.0/exchangecommodity', {
         commodityId: this.$route.params.id
+      }, {
+        headers: {
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJwd2NuIiwiaWF0IjoxNTMwNTg2MTgyfQ.S3zxgM68aPVi4KwawbPOYsRu_D222CrM1_ScSt8Euxs'
+        }
       }).then(res => {
         if (res.data.status === 1) {
-          this.$refs.stockBox.innerHTML = '剩余' + res.data.data.surplusStock + '份'
-          this.$refs.beanBox.innerHTML = '我的竞豆：' + res.data.data.coin
+          console.log(res)
+          this.goodsDetail.surplusStock = res.data.data.surplusStock
+          this.bean = res.data.data.coin
           if (this.goodsDetail.price > res.data.data.coin) {
             this.mdShow3 = true
           } else {
@@ -225,8 +230,9 @@ export default {
                 font-weight bold
             }
             .comm-intro{
-                margin 0.2rem 0 0.23rem 0
+                margin 0.1rem 0 0.23rem 0
                 color: #999999
+                line-height 0.38rem
             }
             .comm-message{
                 height 0.75rem
@@ -262,7 +268,7 @@ export default {
             text-align left
             .title{
                 color: #232323
-                margin-bottom 0.2rem
+                margin-bottom 0.15rem
                 span{
                     display inline-block
                     width 0.1rem
@@ -273,6 +279,7 @@ export default {
             }
             .content{
                 color: #999999
+                line-height 0.38rem
             }
         }
         .footer{
@@ -283,6 +290,7 @@ export default {
             .my-bean{
                 background #fff
                 color #FF5566
+                padding 0.03rem 0
             }
             .btn{
                 height 1.6rem
