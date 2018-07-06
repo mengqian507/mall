@@ -110,7 +110,6 @@ export default {
   },
   mounted () {
     this.getGoodsDetail()
-    this.refresh()
   },
   created () {
     this.$parent.setDetailComponent(this)
@@ -162,13 +161,9 @@ export default {
           this.goodsDetail.surplusStock = res.data.data.surplusStock
           this.bean = res.data.data.coin
           this.refreshUser()
-          if (this.goodsDetail.price > res.data.data.coin) {
-            this.mdShow3 = true
-          } else {
-            this.mdShow2 = true
-          }
+          this.mdShow2 = true
         } else {
-          alert(res.data.msg)
+          this.mdShow3 = true
         }
       })
     },
@@ -190,7 +185,7 @@ export default {
         window.JsObject.Finish()
       }
     },
-    //    点击返回或者关闭按钮
+    //    刷新用户竞豆
     refreshUser () {
       if (typeof RefreshUser !== 'undefined' && typeof RefreshUser !== null) {
         RefreshUser()
@@ -232,7 +227,7 @@ export default {
       if (typeof BuyCoin !== 'undefined' && typeof BuyCoin !== null) {
         BuyCoin()
       } else if (typeof window.JsObject.BuyCoin !== 'undefined' && typeof window.JsObject.BuyCoin !== null) {
-        window.JsObject.loginUserInfo()
+        window.JsObject.BuyCoin()
       }
     },
     receiveDetailMsgFromParent () {
@@ -250,10 +245,16 @@ export default {
         font-size 0.3rem
         color #000
         .header{
-            height 1.08rem
-            line-height 1.08rem
+            background #fff
+            width 100%
+            position fixed
+            left 0
+            top 0
+            z-index 99
+            display flex
+            height 1.2rem
+            line-height 1.2rem
             padding 0 0.4rem
-            margin-bottom 0.3rem
             font-size 0.4rem
             .icon{
                 float left
@@ -267,10 +268,12 @@ export default {
                 }
             }
             .header-con{
-                margin-right 1.5rem
+                background #fff
+                margin-left 2.5rem
             }
         }
         .commodity-box{
+            margin-top 1.2rem
             width 10.80rem
             height 8.1rem
             position relative

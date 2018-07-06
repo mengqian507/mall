@@ -249,10 +249,16 @@ export default {
         .header-con{
             background #fff
             .header{
-                height 1.08rem
-                line-height 1.08rem
+                background #fff
+                width 100%
+                position fixed
+                left 0
+                top 0
+                z-index 99
+                display flex
+                height 1.2rem
+                line-height 1.2rem
                 padding 0 0.4rem
-                margin-bottom 0.3rem
                 font-size 0.4rem
                 .icon{
                     float left
@@ -266,12 +272,14 @@ export default {
                     }
                 }
                 .header-con{
-                    margin-right 1.5rem
+                    background #fff
+                    margin-left 2.5rem
                 }
             }
             .personal{
                 width 100%
                 height 1.2rem
+                margin-top 1.38rem
                 .content{
                     margin:0 auto
                     width 10.2rem

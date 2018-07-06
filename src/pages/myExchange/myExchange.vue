@@ -101,16 +101,22 @@ export default {
         font-family 'MicrosoftYaHeiUI'
         font-size 0.36rem
         color #000
-        .header {
-            height 1.08rem
-            line-height 1.08rem
+        .header{
+            background #fff
+            width 100%
+            position fixed
+            left 0
+            top 0
+            z-index 99
+            display flex
+            height 1.2rem
+            line-height 1.2rem
             padding 0 0.4rem
-            margin-bottom 0.3rem
             font-size 0.4rem
-            .icon {
+            .icon{
                 float left
                 margin-top 0.18rem
-                .icon-img {
+                .icon-img{
                     width 0.56rem
                     height 0.56rem
                     &.first{
@@ -119,10 +125,12 @@ export default {
                 }
             }
             .header-con{
-                margin-right 1.5rem
+                background #fff
+                margin-left 2.5rem
             }
         }
         .menu{
+            margin-top 1.2rem
             height 1rem
             line-height 1rem
             display flex

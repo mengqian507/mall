@@ -17,7 +17,7 @@
         </ul>
         <div style="height: 0.2rem; background:#F2F2F2;margin-top: 2px"></div>
         <ul class="list" v-show="goodsList.length != 0">
-            <li class="list-li" v-for="item in goodsList" :key="item._id">
+            <router-link tag="li" :to="'/detail/' + item._id" class="list-li" v-for="item in goodsList" :key="item._id">
                 <div class="img-box">
                     <img class="goods-img" :src="item.commodityThumbnail">
                     <img v-show="item.surplusStock === 0" class="good-sell-out" src="../../assets/images/sell-out-80.png" alt="">
@@ -34,7 +34,7 @@
                     </div>
                     <div style="clear: both"></div>
                 </div>
-            </li>
+            </router-link>
         </ul>
         <div class="blank" v-show="goodsList.length == 0">
             <img src="../../assets/images/blank.png" alt="">
@@ -84,9 +84,6 @@ export default {
         Finish()
       } else if (typeof window.JsObject !== 'undefined') {
         window.JsObject.Finish()
-      } else {
-        // alert('token'+token);
-        // token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJwd2NuIiwiaWF0IjoxNDk4NTQ0MDUwfQ.lFP8bKxg0kiKkDiRjmzrVSTuKP8S7LbjDvc05y6zpHI';
       }
     }
   }
@@ -100,16 +97,22 @@ export default {
         font-family 'MicrosoftYaHeiUI'
         font-size 0.36rem
         color #000
-        .header {
-            height 1.08rem
-            line-height 1.08rem
+        .header{
+            background #fff
+            width 100%
+            position fixed
+            left 0
+            top 0
+            z-index 99
+            display flex
+            height 1.2rem
+            line-height 1.2rem
             padding 0 0.4rem
-            margin-bottom 0.3rem
             font-size 0.4rem
-            .icon {
+            .icon{
                 float left
                 margin-top 0.18rem
-                .icon-img {
+                .icon-img{
                     width 0.56rem
                     height 0.56rem
                     &.first{
@@ -118,10 +121,12 @@ export default {
                 }
             }
             .header-con{
-                margin-right 1.5rem
+                background #fff
+                margin-left 2.5rem
             }
         }
         .menu{
+            margin-top 1.2rem
             height 1rem
             line-height 1rem
             display flex
