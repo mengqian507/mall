@@ -5,7 +5,7 @@
                 <router-link to="/">
                     <img class="icon-img first" src="../../assets/images/return.png" alt="">
                 </router-link>
-                <img class="icon-img" src="../../assets/images/close.png" alt="">
+                <img class="icon-img" src="../../assets/images/close.png" alt="" @click="signOut()">
             </div>
             <div class="header-con">全部商品</div>
         </div>
@@ -77,6 +77,17 @@ export default {
     toggleTabs (index) {
       this.nowIndex = index
       this.getGoodsList()
+    },
+    //    点击返回或者关闭按钮
+    signOut () {
+      if (typeof Finish !== 'undefined') {
+        Finish()
+      } else if (typeof window.JsObject !== 'undefined') {
+        window.JsObject.Finish()
+      } else {
+        // alert('token'+token);
+        // token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJwd2NuIiwiaWF0IjoxNDk4NTQ0MDUwfQ.lFP8bKxg0kiKkDiRjmzrVSTuKP8S7LbjDvc05y6zpHI';
+      }
     }
   }
 }
@@ -102,7 +113,7 @@ export default {
                     width 0.56rem
                     height 0.56rem
                     &.first{
-                        margin-right 0.1rem
+                        margin-right 0.3rem
                     }
                 }
             }

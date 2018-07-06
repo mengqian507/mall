@@ -3,8 +3,8 @@
         <div class="header-con">
             <div class="header">
                 <div class="icon">
-                    <img class="icon-img first" src="../../assets/images/return.png" alt="">
-                    <img class="icon-img" src="../../assets/images/close.png" alt="">
+                    <img class="icon-img first" src="../../assets/images/return.png" alt="" @click="signOut()">
+                    <img class="icon-img" src="../../assets/images/close.png" alt="" @click="signOut()">
                 </div>
                 <div class="header-con">兑换商城</div>
             </div>
@@ -14,9 +14,9 @@
                         <img class="icon" src="../../assets/images/bean-52.png" alt="">
                         <span class="bean">{{bean}}</span>
                     </div>
-                    <router-link class="btn" tag="div" to="/exchange">
+                    <div class="btn" @click="toMyExchange()">
                         我的兑换
-                    </router-link>
+                    </div>
                 </div>
             </div>
             <div class="prize">
@@ -42,7 +42,7 @@
                     </router-link>
                 </div>
                 <ul class="content-ul" v-show="recommendGoods.length != 0">
-                    <router-link tag="li" :to="'/detail/' + item._id + '/' + bean" class="content-li" v-for="item in recommendGoods" :key="item._id">
+                    <router-link tag="li" :to="'/detail/' + item._id" class="content-li" v-for="item in recommendGoods" :key="item._id">
                         <img class="commodity-img" :src="item.commodityThumbnail">
                         <div class="commodity-message">
                             <div class="commodity-title">{{item.commodityName}}</div>
@@ -73,7 +73,7 @@
                     </li>
                 </ul>
                 <ul class="content-ul" v-show="hotGoods.length != 0">
-                    <router-link class="content-li" tag="li" :to="'/detail/' + item._id + '/' + bean" v-for="item in hotGoods" :key="item._id">
+                    <router-link class="content-li" tag="li" :to="'/detail/' + item._id" v-for="item in hotGoods" :key="item._id">
                         <div class="img-content">
                             <img class="commodity-img" :src="item.commodityThumbnail">
                             <img v-show="item.surplusStock <= 0" class="commodity-icon" src="../../assets/images/sell-out-80.png" alt="">
@@ -108,12 +108,13 @@ export default {
       couponsList: [],
       tabsParam: ['全部', '实物商品', '虚拟商品', '优惠券'],
       nowIndex: 0,
-      bean: 4000,
+      bean: 0,
+      userId: '',
       swiperOption: {
         pagination: '.swiper-pagination',
         loop: true,
         autoplay: 200,
-        speed: 5000
+        speed: 4000
       }
     }
   },
@@ -121,6 +122,10 @@ export default {
     this.getRecommendGoods()
     this.getHotGoods()
     this.getCoupons()
+    this.setUserLogin()
+  },
+  created () {
+    this.$parent.setComponent(this)
   },
   methods: {
     //  获取推荐列表
@@ -181,12 +186,54 @@ export default {
         }
       })
     },
+    //    菜单切换
     toggleTabs (index) {
       this.nowIndex = index
       this.getHotGoods()
+    },
+    //    点击我的兑换按钮
+    toMyExchange () {
+      if (this.userId !== '') {
+        this.$router.push({ name: 'MyExchange', params: { userId: this.userId }})
+      } else {
+        this.signIn()
+      }
+    },
+    //    点击返回或者关闭按钮
+    signOut () {
+      if (typeof Finish !== 'undefined' && typeof Finish !== null) {
+        Finish()
+      } else if (typeof window.JsObject.Finish !== 'undefined' && typeof window.JsObject.Finish !== null) {
+        window.JsObject.Finish()
+      }
+    },
+    //    跳转到登录页
+    signIn () {
+      if (typeof LoginUser !== 'undefined' && typeof LoginUser !== null) {
+        LoginUser()
+      } else if (typeof window.JsObject !== 'undefined' && typeof window.JsObject.LoginUser !== null) {
+        window.JsObject.LoginUser()
+      }
+    },
+    // 获取用户信息
+    setUserLogin () {
+      let user = ''
+      if (typeof GetUserToken !== 'undefined' && typeof GetUserToken !== null) {
+        user = JSON.parse(GetUserToken())
+        this.bean = user.coin
+        this.userId = user.userId
+      } else if (typeof window.JsObject.GetUserToken() !== 'undefined' && typeof window.JsObject.GetUserToken() !== null) {
+        user = JSON.parse(window.JsObject.GetUserToken())
+        this.bean = user.coin
+        this.userId = user.userId
+      }
+    },
+    receiveMsgFromParent () {
+      this.setUserLogin()
     }
   }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -214,7 +261,7 @@ export default {
                         width 0.56rem
                         height 0.56rem
                         &.first{
-                            margin-right 0.1rem
+                            margin-right 0.3rem
                         }
                     }
                 }

@@ -5,7 +5,7 @@
                 <router-link to="/">
                     <img class="icon-img first" src="../../assets/images/return.png" alt="">
                 </router-link>
-                <img class="icon-img" src="../../assets/images/close.png" alt="">
+                <img class="icon-img" src="../../assets/images/close.png" alt="" @click="signOut()">
             </div>
             <div class="header-con">商品详情</div>
         </div>
@@ -21,7 +21,7 @@
                     <img src="../../assets/images/bean-52.png" alt="">
                     <span>{{goodsDetail.price}}竞豆</span>
                 </div>
-                <div class="price">参考价({{goodsDetail.referencePrice/100}}元)</div>
+                <div class="price">参考价({{goodsDetail.referencePrice/100}} 元)</div>
                 <div class="stock" ref="stockBox">剩余{{goodsDetail.surplusStock}}件</div>
             </div>
             <div style="clear: both"></div>
@@ -100,7 +100,8 @@ export default {
   data () {
     return {
       goodsDetail: {},
-      bean: '',
+      bean: 0,
+      token: '',
       mdShow1: false,
       mdShow2: false,
       mdShow3: false,
@@ -109,7 +110,10 @@ export default {
   },
   mounted () {
     this.getGoodsDetail()
-    this.bean = this.$route.params.bean
+    this.refresh()
+  },
+  created () {
+    this.$parent.setDetailComponent(this)
   },
   methods: {
     //    获取详情
@@ -118,6 +122,7 @@ export default {
         .then(res => {
           if (res.data.status === 1 && res.data.data) {
             this.goodsDetail = res.data.data
+            this.setUserLogin()
           } else {
             alert(res.data.msg)
           }
@@ -125,8 +130,12 @@ export default {
     },
     //    点击立即兑换按钮
     exchangeBtn () {
-      this.mdShow1 = true
-      this.mdShow = true
+      if (this.token == '') {
+        this.signIn()
+      } else {
+        this.mdShow1 = true
+        this.mdShow = true
+      }
     },
     cancelBtn1 () {
       this.mdShow1 = false
@@ -146,13 +155,13 @@ export default {
         commodityId: this.$route.params.id
       }, {
         headers: {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJwd2NuIiwiaWF0IjoxNTMwNTg2MTgyfQ.S3zxgM68aPVi4KwawbPOYsRu_D222CrM1_ScSt8Euxs'
+          token: this.token
         }
       }).then(res => {
         if (res.data.status === 1) {
-          console.log(res)
           this.goodsDetail.surplusStock = res.data.data.surplusStock
           this.bean = res.data.data.coin
+          this.refreshUser()
           if (this.goodsDetail.price > res.data.data.coin) {
             this.mdShow3 = true
           } else {
@@ -164,12 +173,70 @@ export default {
       })
     },
     confirmBtn2 () {
+      this.toService()
       this.mdShow2 = false
       this.mdShow = false
     },
     confirmBtn3 () {
+      this.toBuyCoin()
       this.mdShow3 = false
       this.mdShow = false
+    },
+    //    点击返回或者关闭按钮
+    signOut () {
+      if (typeof Finish !== 'undefined' && typeof Finish !== null) {
+        Finish()
+      } else if (typeof window.JsObject !== 'undefined' && typeof window.JsObject.Finish !== null) {
+        window.JsObject.Finish()
+      }
+    },
+    //    点击返回或者关闭按钮
+    refreshUser () {
+      if (typeof RefreshUser !== 'undefined' && typeof RefreshUser !== null) {
+        RefreshUser()
+      } else if (typeof window.JsObject !== 'undefined' && typeof window.JsObject.RefreshUser !== null) {
+        window.JsObject.RefreshUser()
+      }
+    },
+    //    跳转到登录页
+    signIn () {
+      if (typeof LoginUser !== 'undefined' && typeof LoginUser !== null) {
+        LoginUser()
+      } else if (typeof window.JsObject !== 'undefined' && typeof window.JsObject.LoginUser !== null) {
+        window.JsObject.LoginUser()
+      }
+    },
+    // 获取用户信息
+    setUserLogin () {
+      let user = ''
+      if (typeof GetUserToken !== 'undefined' && typeof GetUserToken !== null) {
+        user = JSON.parse(GetUserToken())
+        this.bean = user.coin
+        this.token = user.token
+      } else if (typeof window.JsObject.GetUserToken() !== 'undefined' && typeof window.JsObject.GetUserToken() !== null) {
+        user = JSON.parse(window.JsObject.GetUserToken())
+        this.bean = user.coin
+        this.token = user.token
+      }
+    },
+    //    去客服页面
+    toService () {
+      if (typeof CustomerService !== 'undefined' && typeof CustomerService !== null) {
+        CustomerService()
+      } else if (typeof window.JsObject.CustomerService !== 'undefined' && typeof window.JsObject.CustomerService !== null) {
+        window.JsObject.CustomerService()
+      }
+    },
+    //    去兑换竞豆页面
+    toBuyCoin () {
+      if (typeof BuyCoin !== 'undefined' && typeof BuyCoin !== null) {
+        BuyCoin()
+      } else if (typeof window.JsObject.BuyCoin !== 'undefined' && typeof window.JsObject.BuyCoin !== null) {
+        window.JsObject.loginUserInfo()
+      }
+    },
+    receiveDetailMsgFromParent () {
+      this.setUserLogin()
     }
   }
 }
@@ -195,7 +262,7 @@ export default {
                     width 0.56rem
                     height 0.56rem
                     &.first{
-                        margin-right 0.1rem
+                        margin-right 0.3rem
                     }
                 }
             }

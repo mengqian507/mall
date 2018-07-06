@@ -14,7 +14,7 @@ export default new Router({
       name: 'Home',
       component: Home
     }, {
-      path: '/detail/:id/:bean',
+      path: '/detail/:id',
       name: 'Detail',
       component: Detail
     }, {
@@ -22,7 +22,7 @@ export default new Router({
       name: 'GoodsList',
       component: GoodsList
     }, {
-      path: '/exchange',
+      path: '/exchange/:userId',
       name: 'MyExchange',
       component: MyExchange
     }

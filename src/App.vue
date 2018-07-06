@@ -5,8 +5,33 @@
 </template>
 
 <script>
+import Home from './pages/home/Home'
+import Detail from './pages/detail/Detail'
+var curComponent
+var curDetailComponent
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Home,
+    Detail
+  },
+  methods: {
+    setComponent (component) {
+      curComponent = component
+    },
+    setDetailComponent (component) {
+      curDetailComponent = component
+    }
+  },
+  created () {
+    this.$router.push({path: '/'})
+  }
+}
+window["receiveMsgFromNative"] = function () {
+  curComponent.receiveMsgFromParent()
+}
+window["receiveMsgFromNative"] = function () {
+  curDetailComponent.receiveDetailMsgFromParent()
 }
 </script>
 
