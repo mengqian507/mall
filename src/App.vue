@@ -8,7 +8,6 @@
 import Home from './pages/home/Home'
 import Detail from './pages/detail/Detail'
 var curComponent
-var curDetailComponent
 export default {
   name: 'App',
   components: {
@@ -18,9 +17,6 @@ export default {
   methods: {
     setComponent (component) {
       curComponent = component
-    },
-    setDetailComponent (component) {
-      curDetailComponent = component
     }
   },
   created () {
@@ -29,9 +25,6 @@ export default {
 }
 window["receiveMsgFromNative"] = function () {
   curComponent.receiveMsgFromParent()
-}
-window["receiveMsgFromNative"] = function () {
-  curDetailComponent.receiveDetailMsgFromParent()
 }
 </script>
 

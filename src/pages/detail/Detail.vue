@@ -112,7 +112,7 @@ export default {
     this.getGoodsDetail()
   },
   created () {
-    this.$parent.setDetailComponent(this)
+    this.$parent.setComponent(this)
   },
   methods: {
     //    获取详情
@@ -129,7 +129,7 @@ export default {
     },
     //    点击立即兑换按钮
     exchangeBtn () {
-      if (this.token == '') {
+      if (this.token === '') {
         this.signIn()
       } else {
         this.mdShow1 = true
@@ -150,6 +150,7 @@ export default {
     },
     confirmBtn1 () {
       this.mdShow1 = false
+      this.mdShow = false
       axios.post('/api/v2.0/exchangecommodity', {
         commodityId: this.$route.params.id
       }, {
@@ -162,8 +163,10 @@ export default {
           this.bean = res.data.data.coin
           this.refreshUser()
           this.mdShow2 = true
+          this.mdShow = true
         } else {
           this.mdShow3 = true
+          this.mdShow = true
         }
       })
     },
@@ -230,7 +233,7 @@ export default {
         window.JsObject.BuyCoin()
       }
     },
-    receiveDetailMsgFromParent () {
+    receiveMsgFromParent () {
       this.setUserLogin()
     }
   }

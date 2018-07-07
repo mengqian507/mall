@@ -21,10 +21,9 @@
             </div>
             <div class="prize">
                 <img class="horn" src="../../assets/images/horn.png" alt="">
-                <swiper :options="swiperOption">
+                <swiper :options="swiperOption" class="swiper-no-swiping">
                     <swiper-slide v-for="item in couponsList" :key="item._id" style="text-align: left;">
                         恭喜{{item.userId.nickname}}******获得{{item.commodity.commodityName}}
-                        <!--<MarqueeTips class="lamp" v-bind:content="item.commodity.commodityName"></MarqueeTips>-->
                     </swiper-slide>
                 </swiper>
             </div>
@@ -114,18 +113,20 @@ export default {
         pagination: '.swiper-pagination',
         loop: true,
         autoplay: 200,
-        speed: 4000
+        speed: 4000,
+        observer: true,
+        observeParents: true
       }
     }
+  },
+  created () {
+    this.$parent.setComponent(this)
   },
   mounted () {
     this.getRecommendGoods()
     this.getHotGoods()
     this.getCoupons()
     this.setUserLogin()
-  },
-  created () {
-    this.$parent.setComponent(this)
   },
   methods: {
     //  获取推荐列表
@@ -277,9 +278,9 @@ export default {
                 }
             }
             .personal{
+                margin-top 1.38rem
                 width 100%
                 height 1.2rem
-                margin-top 1.38rem
                 .content{
                     margin:0 auto
                     width 10.2rem
