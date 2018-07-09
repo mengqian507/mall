@@ -122,7 +122,7 @@ export default {
             }
             .header-con{
                 background #fff
-                margin-left 2.5rem
+                margin-left 2.7rem
             }
         }
         .menu{

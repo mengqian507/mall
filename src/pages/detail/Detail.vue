@@ -119,7 +119,7 @@ export default {
   methods: {
     //    获取详情
     getGoodsDetail () {
-      axios.get('api/v2.0/commodities/' + this.$route.params.id)
+      axios.get('/api/v2.0/commodities/' + this.$route.params.id)
         .then(res => {
           if (res.data.status === 1 && res.data.data) {
             this.goodsDetail = res.data.data
@@ -274,7 +274,7 @@ export default {
             }
             .header-con{
                 background #fff
-                margin-left 2.5rem
+                margin-left 2.7rem
             }
         }
         .commodity-box{

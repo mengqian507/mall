@@ -26,7 +26,7 @@
                     <div class="goods-introduce">{{item.commodity.briefIntroduction}}</div>
                     <div class="price">兑换价格：{{item.commodity.price}}竞豆</div>
                     <div class="exchange">
-                        <div class="time">2018.06.31 15:59</div>
+                        <div class="time">{{item.commodity.createdAt | formatDate}}</div>
                         <div class="state">
                             <img src="../../assets/images/Oval.png" alt="">
                             <span>兑换成功</span>
@@ -46,8 +46,15 @@
 
 <script>
 import axios from 'axios'
+import {formatDate} from '../../components/date'
 export default {
   name: 'MyExchange',
+  filters: {
+    formatDate(time) {
+      var date = new Date(time)
+      return formatDate(date, 'yyyy.MM.dd hh:mm')
+    }
+  },
   data () {
     return {
       recordList: [],
@@ -85,9 +92,6 @@ export default {
         Finish()
       } else if (typeof window.JsObject !== 'undefined') {
         window.JsObject.Finish()
-      } else {
-        // alert('token'+token);
-        // token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJwd2NuIiwiaWF0IjoxNDk4NTQ0MDUwfQ.lFP8bKxg0kiKkDiRjmzrVSTuKP8S7LbjDvc05y6zpHI';
       }
     }
   }
@@ -126,7 +130,7 @@ export default {
             }
             .header-con{
                 background #fff
-                margin-left 2.5rem
+                margin-left 2.7rem
             }
         }
         .menu{
