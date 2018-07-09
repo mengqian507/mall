@@ -44,7 +44,9 @@
         </div>
         <div class="footer">
             <div class="my-bean" ref="beanBox">我的竞豆：{{bean}}</div>
-            <div class="btn" :class="{active:goodsDetail.surplusStock <= 0}" @click="exchangeBtn()">立即兑换</div>
+            <div class="btn" v-if="goodsDetail.surplusStock > 0 && goodsDetail.commodityStatus == 1" @click="exchangeBtn()">立即兑换</div>
+            <div class="btn active" v-if="goodsDetail.surplusStock <= 0 && goodsDetail.commodityStatus == 1">立即兑换</div>
+            <div class="btn active" v-if="goodsDetail.commodityStatus == 2">已下架</div>
         </div>
         <!--弹框-->
         <div class="model">
