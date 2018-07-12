@@ -15,14 +15,14 @@
         </div>
         <div class="commodity">
             <div class="comm-title">{{goodsDetail.commodityName}}</div>
-            <div class="comm-intro">{{goodsDetail.briefIntroduction}}</div>
+            <div class="comm-intro" style="font-family: Arial">{{goodsDetail.briefIntroduction}}</div>
             <div class="comm-message">
                 <div class="bean">
                     <img src="../../assets/images/bean-52.png" alt="">
-                    <span>{{goodsDetail.price}}竞豆</span>
+                    <span style="font-family: Arial">{{goodsDetail.price}}竞豆</span>
                 </div>
-                <div class="price">参考价({{goodsDetail.referencePrice/100}} 元)</div>
-                <div class="stock" ref="stockBox">剩余{{goodsDetail.surplusStock}}件</div>
+                <div class="price">参考价<span style="font-family: Arial">({{goodsDetail.referencePrice/100}} 元)</span></div>
+                <div class="stock" ref="stockBox">剩余<span style="font-family: Arial">{{goodsDetail.surplusStock}}</span>件</div>
             </div>
             <div style="clear: both"></div>
         </div>
@@ -32,18 +32,18 @@
                 <span></span>
                 商品介绍
             </div>
-            <div class="content">{{goodsDetail.description}}</div>
+            <pre class="content">{{goodsDetail.description}}</pre>
         </div>
         <div style="height: 1px;background: #E9E9E9;width:10rem;margin: 0 auto"></div>
-        <div class="introduce" >
+        <div class="introduce" style="margin-bottom: 1.8rem">
             <div class="title">
                 <span></span>
                 兑换说明
             </div>
-            <div class="content">{{goodsDetail.exchangeExplain}}</div>
+            <pre class="content">{{goodsDetail.exchangeExplain}}</pre>
         </div>
         <div class="footer">
-            <div class="my-bean" ref="beanBox">我的竞豆：{{bean}}</div>
+            <div class="my-bean" ref="beanBox">我的竞豆：<span style="font-family: Arial">{{bean}}</span></div>
             <div class="btn" v-if="goodsDetail.surplusStock > 0 && goodsDetail.commodityStatus == 1" @click="exchangeBtn()">立即兑换</div>
             <div class="btn active" v-if="goodsDetail.surplusStock <= 0 && goodsDetail.commodityStatus == 1">立即兑换</div>
             <div class="btn active" v-if="goodsDetail.commodityStatus == 2">已下架</div>
@@ -54,7 +54,7 @@
                 <div class="md-modal-inner">
                     <div class="md-content" style="margin-top: 20px;">
                         <div class="confirm-tips">
-                            兑换将使用{{goodsDetail.price}}竞豆
+                            兑换将使用<span style="font-family: Arial">{{goodsDetail.price}}</span>竞豆
                         </div>
                         <div class="btn-wrap">
                             <button class="cancel" @click="cancelBtn1()">取消</button>
@@ -249,6 +249,14 @@ export default {
         font-family 'MicrosoftYaHeiUI'
         font-size 0.3rem
         color #000
+        pre {
+            white-space pre-wrap
+            white-space -moz-pre-wrap
+            white-space -pre-wrap
+            white-space -o-pre-wrap
+            *word-wrap break-word
+            *white-space normal
+        }
         .header{
             background #fff
             width 100%
@@ -355,6 +363,7 @@ export default {
             .content{
                 color: #999999
                 line-height 0.38rem
+                /*font-family 'MicrosoftYaHeiUI'*/
             }
         }
         .footer{

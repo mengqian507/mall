@@ -24,9 +24,9 @@
                 <div class="goods">
                     <div class="goods-name">{{item.commodity.commodityName}}</div>
                     <div class="goods-introduce">{{item.commodity.briefIntroduction}}</div>
-                    <div class="price">兑换价格：{{item.commodity.price}}竞豆</div>
+                    <div class="price">兑换价格：<span style="font-family: Arial">{{item.commodity.price}}</span>竞豆</div>
                     <div class="exchange">
-                        <div class="time">{{item.commodity.createdAt | formatDate}}</div>
+                        <div class="time">{{item.createdAt | formatDate}}</div>
                         <div class="state">
                             <img src="../../assets/images/Oval.png" alt="">
                             <span>兑换成功</span>
@@ -187,6 +187,7 @@ export default {
                     .goods-introduce{
                         color #999999
                         font-size 0.3rem
+                        font-family Arial
                         margin 0.1rem 0 0.2rem 0
                         height 0.8rem
                         line-height 0.38rem
@@ -205,6 +206,7 @@ export default {
                             float left
                             font-size 0.3rem
                             color #464646
+                            font-family Arial
                         }
                         .state{
                             float right

@@ -45,7 +45,7 @@
                         <img class="commodity-img" :src="item.commodityThumbnail">
                         <div class="commodity-message">
                             <div class="commodity-title">{{item.commodityName}}</div>
-                            <div class="commodity-price">参考价 {{item.referencePrice/100}}元</div>
+                            <div class="commodity-price">参考价 <span style="font-family: Arial">{{item.referencePrice/100}}</span>元</div>
                             <div class="commodity-bean">
                                 <img class="bean-img" src="../../assets/images/bean-32.png" alt="">
                                 <span class="bean">{{item.price}}竞豆</span>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="commodity-message">
                             <div class="commodity-title">{{item.commodityName}}</div>
-                            <div class="commodity-price">参考价 {{item.referencePrice/100}}元</div>
+                            <div class="commodity-price">参考价 <span style="font-family: Arial">{{item.referencePrice/100}}</span>元</div>
                             <div class="commodity-bean">
                                 <img class="bean-img" src="../../assets/images/bean-32.png" alt="">
                                 <span class="bean">{{item.price}}竞豆</span>
@@ -368,7 +368,8 @@ export default {
                         width 0.38rem
                         height 0.38rem
                         display inline-block
-                        vertical-align middle
+                        vertical-align top
+                        margin-top 0.44rem
                     }
                 }
             }
@@ -382,6 +383,7 @@ export default {
                 box-sizing border-box
                 .commodity-title{
                     font-size: 0.36rem
+                    font-weight bolder
                     color: #232323
                     line-height: 0.36rem
                     height 0.36rem
@@ -395,13 +397,14 @@ export default {
                 }
                 .commodity-bean{
                     .bean-img{
-                        width 0.37rem
-                        height 0.3rem
+                        width 0.32rem
+                        height 0.32rem
                     }
                     .bean{
                         font-size: 0.32rem
                         color: #FFA912
                         font-weight bold
+                        font-family Arial
                     }
                 }
             }

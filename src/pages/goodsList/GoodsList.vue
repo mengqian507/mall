@@ -28,9 +28,9 @@
                     <div class="goods-message">
                         <div class="bean">
                             <img src="../../assets/images/bean-52.png" alt="">
-                            <span>{{item.price}}竞豆</span>
+                            <span style="font-family: Arial">{{item.price}}竞豆</span>
                         </div>
-                        <div class="price">参考价({{item.referencePrice/100}}元)</div>
+                        <div class="price">参考价<span style="font-family: Arial">({{item.referencePrice/100}}元)</span></div>
                     </div>
                     <div style="clear: both"></div>
                 </div>
@@ -187,6 +187,7 @@ export default {
                     .goods-introduce{
                         color #999999
                         font-size 0.3rem
+                        font-family Arial
                         margin 0.15rem 0 0.25rem 0
                         height 0.8rem
                         line-height 0.38rem
