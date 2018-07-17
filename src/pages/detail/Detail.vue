@@ -78,13 +78,13 @@
             </div>
             <div class="md-modal " v-if="mdShow3">
                 <div class="md-modal-inner">
-                    <div class="md-content" style="margin-top: 20px;">
+                    <div class="md-content" style="margin-top: 20px;">l
                         <div class="confirm-tips">
                             您的竞豆余额不足
                         </div>
                         <div class="btn-wrap">
                             <button class="cancel" @click="cancelBtn3()">取消</button>
-                            <button class="confirm" @click="confirmBtn3()">前去兑换</button>
+                            <button class="confirm" v-if="buySwicth" @click="confirmBtn3()">前去兑换</button>
                         </div>
                     </div>
                 </div>
@@ -103,6 +103,7 @@ export default {
     return {
       goodsDetail: {},
       bean: 0,
+      buySwicth: false,
       token: '',
       mdShow1: false,
       mdShow2: false,
@@ -213,10 +214,12 @@ export default {
         user = JSON.parse(GetUserToken())
         this.bean = user.coin
         this.token = user.token
+        this.buySwicth = user.buySwicth
       } else if (typeof window.JsObject.GetUserToken() !== 'undefined' && typeof window.JsObject.GetUserToken() !== null) {
         user = JSON.parse(window.JsObject.GetUserToken())
         this.bean = user.coin
         this.token = user.token
+        this.buySwicth = user.buySwicth
       }
     },
     //    去客服页面

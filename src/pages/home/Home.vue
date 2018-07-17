@@ -87,6 +87,11 @@
                         </div>
                     </router-link>
                 </ul>
+                <div class="blank" v-show="hotGoods.length == 0">
+                    <p>商品还没有准备好<br>
+                        请您密切关注哦～
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -482,6 +487,15 @@ export default {
                             width 4.9rem
                         }
                     }
+                }
+            }
+            .blank{
+                width 100%
+                position absolute
+                top 15rem
+                p{
+                    color #BDBDBD
+                    font-size 0.42rem
                 }
             }
         }
