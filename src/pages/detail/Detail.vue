@@ -78,7 +78,7 @@
             </div>
             <div class="md-modal " v-if="mdShow3">
                 <div class="md-modal-inner">
-                    <div class="md-content" style="margin-top: 20px;">l
+                    <div class="md-content" style="margin-top: 20px;">
                         <div class="confirm-tips">
                             您的竞豆余额不足
                         </div>
